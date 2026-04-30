@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #fdfcfb;
+  --foreground: #1c1917;
+}
+
+body {
+  color: var(--foreground);
+  /* Deeper Studio lighting effect: Radial gradient with darker edges */
+  background: radial-gradient(circle at center, #fdfcfb 0%, #a8a29e 60%, #78716c 100%);
+  transition: background 0.8s ease;
+  min-height: 100vh;
+}
+
+/* Custom vignette effect for merging with image */
+.vignette-overlay {
+  background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.1) 60%, rgba(0,0,0,0.4) 100%);
+}
+
+::selection {
+  background-color: #57534e;
+  color: #ffffff;
+}
+
+/* Hide scrollbars for a cleaner app-like feel */
+::-webkit-scrollbar {
+  display: none;
+}
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
