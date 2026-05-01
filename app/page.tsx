@@ -2,17 +2,37 @@
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check } from "lucide-react";
-import { products } from "@/data/products";
+import { products, jewelleryCatalog } from "@/data/products";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductBottleScroll from "@/components/ProductBottleScroll";
+import OfferPopup from "@/components/OfferPopup";
+import { ProductRow } from "@/components/ProductGrid";
 
 export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [showPopup, setShowPopup] = useState(false);
+  const [hasShownPopup, setHasShownPopup] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [currentIndex]);
+
+  // Handle scroll for popup
+  useEffect(() => {
+    const handleScroll = () => {
+      if (hasShownPopup) return;
+      
+      const scrollThreshold = window.innerHeight * 4; // Near the end of the 500vh scroll
+      if (window.scrollY > scrollThreshold) {
+        setShowPopup(true);
+        setHasShownPopup(true);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [hasShownPopup]);
 
   const product = products[currentIndex];
   const isJewellery = product.category === "Jewellery";
@@ -154,9 +174,12 @@ export default function Home() {
                 </div>
               </div>
             </motion.section>
+
+            <ProductRow title="Curated Collections" products={jewelleryCatalog} />
           </div>
 
           <Footer />
+          <OfferPopup isVisible={showPopup} onClose={() => setShowPopup(false)} />
         </motion.div>
       </AnimatePresence>
     </main>
